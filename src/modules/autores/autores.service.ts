@@ -44,4 +44,17 @@ export class AutoresService {
       email: bodyRequest.email,
     });
   }
+
+  atualizarAutor(idAutor: number, bodyrequest: any) {
+    const autorEncontrado = autores.find((autor) => autor.id === idAutor);
+
+    if (!autorEncontrado) {
+      return 'Autor não encontrado.';
+    }
+
+    autorEncontrado.nome = bodyrequest.nome;
+    autorEncontrado.email = bodyrequest.email;
+
+    return autorEncontrado;
+  }
 }
