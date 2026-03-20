@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { CriarAutorDto } from './autores.dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { atualizarAutorDto, CriarAutorDto } from './autores.dto';
 
 let autores = [
   {
@@ -29,7 +33,7 @@ export class AutoresService {
     const autorEncontrado = autores.find((autor) => autor.id === id);
 
     if (!autorEncontrado) {
-      return 'Autor não encontrado.';
+      throw new NotFoundException('Autor não encontrado.');
     }
     return autorEncontrado;
   }
@@ -45,15 +49,24 @@ export class AutoresService {
     });
   }
 
-  atualizarAutor(idAutor: number, bodyrequest: any) {
-    const autorEncontrado = autores.find((autor) => autor.id === idAutor);
+  atualizarAutor(idAutor: number, bodyrequest: atualizarAutorDto) {
+    const autorEncontrado = this.listarAutor(idAutor);
 
     if (!autorEncontrado) {
       return 'Autor não encontrado.';
     }
 
-    autorEncontrado.nome = bodyrequest.nome;
-    autorEncontrado.email = bodyrequest.email;
+    if (bodyrequest.nome && !bodyrequest.email) {
+      throw new BadRequestException('nome e email são obrigatorios!');
+    }
+
+    if (bodyrequest.nome) {
+      autorEncontrado.nome = bodyrequest.nome;
+    }
+
+    if (bodyrequest.email) {
+      autorEncontrado.email = bodyrequest.email;
+    }
 
     return autorEncontrado;
   }
