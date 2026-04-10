@@ -3,6 +3,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { DRIZZLE } from './database.constants';
 import { Module } from '@nestjs/common';
 import * as schema from '../schemas';
+import { DATABASE_URL } from './database.constants';
 
 @Global()
 @Module({
@@ -11,7 +12,7 @@ import * as schema from '../schemas';
       provide: DRIZZLE,
       inject: [],
       useFactory: () => {
-        return drizzle('', { schema });
+        return drizzle(DATABASE_URL, { schema });
       },
     },
   ],
