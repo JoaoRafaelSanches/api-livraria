@@ -1,9 +1,9 @@
-import { Global } from '@nestjs/common';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { DRIZZLE } from './database.constants';
-import { Module } from '@nestjs/common';
-import * as schema from '../schemas';
-import { DATABASE_URL } from './database.constants';
+import { Global, Module } from '@nestjs/common';
+import { DATABASE_URL, DRIZZLE } from './database.constants';
+import { drizzle } from 'drizzle-orm/node-mssql';
+import { connect } from 'mssql';
+import type { config as MsSqlConfig } from 'mssql';
+import * as schema from '../schemas/index';
 
 @Global()
 @Module({
@@ -11,8 +11,21 @@ import { DATABASE_URL } from './database.constants';
     {
       provide: DRIZZLE,
       inject: [],
-      useFactory: () => {
-        return drizzle(DATABASE_URL, { schema });
+      useFactory: async () => {
+        const dbConfig: MsSqlConfig = {
+          server: 'SRV-BD-1',
+          port: 1433,
+          user: 'alunos_des225',
+          password: '123',
+          database: 'des225_joaor',
+          options: {
+            encrypt: false,
+            trustServerCertificate: true,
+          },
+        };
+
+        const pool = await connect(dbConfig);
+        return drizzle({ client: pool, schema: schema });
       },
     },
   ],
