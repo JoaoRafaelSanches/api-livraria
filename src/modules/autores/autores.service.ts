@@ -31,47 +31,41 @@ export class AutoresService {
     return await this.autoresRepository.listarAutores();
   }
 
-  listarAutor(id: number) {
-    const autorEncontrado = autores.find((autor) => autor.id === id);
+  async listarAutor(id: number) {
+    const autorEncontrado = await this.autoresRepository.listarAutor(id);
 
-    if (!autorEncontrado) {
-      throw new NotFoundException('Autor não encontrado.');
+    if (autorEncontrado.length === 0) {
+      throw new NotFoundException(`autor com id ${id} não encontrado`);
     }
+
     return autorEncontrado;
   }
 
   criarAutor(bodyRequest: CriarAutorDto) {
-    if (!bodyRequest.nome || !bodyRequest.email) {
-      return 'Nome e email são obrigatórios';
-    }
-    autores.push({
-      id: autores.length + 1,
-      nome: bodyRequest.nome,
-      email: bodyRequest.email,
-    });
+    return this.autoresRepository.criarAutor(bodyRequest);
   }
 
-  atualizarAutor(idAutor: number, bodyrequest: atualizarAutorDto) {
-    const autorEncontrado = this.listarAutor(idAutor);
+  // atualizarAutor(idAutor: number, bodyrequest: atualizarAutorDto) {
+  //   const autorEncontrado = this.listarAutor(idAutor);
 
-    if (!autorEncontrado) {
-      return 'Autor não encontrado.';
-    }
+  //    if (!autorEncontrado) {
+  //     return 'Autor não encontrado.';
+  //   }
 
-    if (bodyrequest.nome && !bodyrequest.email) {
-      throw new BadRequestException('nome e email são obrigatorios!');
-    }
+  //   if (bodyrequest.nome && !bodyrequest.email) {
+  //     throw new BadRequestException('nome e email são obrigatorios!');
+  //   }
 
-    if (bodyrequest.nome) {
-      autorEncontrado.nome = bodyrequest.nome;
-    }
+  //   if (bodyrequest.nome) {
+  //     autorEncontrado.nome = bodyrequest.nome;
+  //   }
 
-    if (bodyrequest.email) {
-      autorEncontrado.email = bodyrequest.email;
-    }
+  //   if (bodyrequest.email) {
+  //     autorEncontrado.email = bodyrequest.email;
+  //   }
 
-    return autorEncontrado;
-  }
+  //   return autorEncontrado;
+  // }
 
   deletarAutor(idAutor: number) {
     this.listarAutor(idAutor);
