@@ -1,0 +1,2 @@
+ALTER TABLE [autores] ADD [ativo] bit NOT NULL CONSTRAINT [autores_ativo_default] DEFAULT ((1));--> statement-breakpoint
+ALTER TABLE [autores] ADD [criado_em] datetime NOT NULL CONSTRAINT [autores_criado_em_default] DEFAULT (getdate());
