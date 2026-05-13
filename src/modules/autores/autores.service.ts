@@ -2,9 +2,12 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { atualizarAutorDto, CriarAutorDto } from './autores.dto';
 import { AutoresRepository } from './autores.repository';
+import { autoresTabela } from 'src/db/schemas';
 
 let autores = [
   {
@@ -45,33 +48,15 @@ export class AutoresService {
     return this.autoresRepository.criarAutor(bodyRequest);
   }
 
-  // atualizarAutor(idAutor: number, bodyrequest: atualizarAutorDto) {
-  //   const autorEncontrado = this.listarAutor(idAutor);
+  async atualizarAutor(idAutor: number, bodyrequest: atualizarAutorDto) {
+    await this.listarAutor(idAutor);
 
-  //    if (!autorEncontrado) {
-  //     return 'Autor não encontrado.';
-  //   }
+    return await this.autoresRepository.atualizarAutor(idAutor, bodyrequest);
+  }
 
-  //   if (bodyrequest.nome && !bodyrequest.email) {
-  //     throw new BadRequestException('nome e email são obrigatorios!');
-  //   }
+  async deletarAutor(idAutor: number) {
+    await this.listarAutor(idAutor);
 
-  //   if (bodyrequest.nome) {
-  //     autorEncontrado.nome = bodyrequest.nome;
-  //   }
-
-  //   if (bodyrequest.email) {
-  //     autorEncontrado.email = bodyrequest.email;
-  //   }
-
-  //   return autorEncontrado;
-  // }
-
-  deletarAutor(idAutor: number) {
-    this.listarAutor(idAutor);
-
-    autores = autores.filter((autor) => autor.id !== idAutor);
-
-    return autores;
+    return await this.autoresRepository.deletarAutor(idAutor);
   }
 }

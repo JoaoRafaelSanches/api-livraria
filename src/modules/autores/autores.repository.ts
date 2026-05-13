@@ -55,4 +55,12 @@ export class AutoresRepository {
       throw new InternalServerErrorException('Erro ao atualizar autor');
     }
   }
+  async deletarAutor(id: number) {
+    try {
+      await this.db.delete(autoresTabela).where(eq(autoresTabela.id, id));
+      return { message: 'Autor deletado com sucesso' };
+    } catch (error) {
+      throw new InternalServerErrorException('Erro ao deletar autor');
+    }
+  }
 }
