@@ -1,22 +1,31 @@
-import {
-  Injectable,
-  Inject,
-  InternalServerErrorException,
-} from '@nestjs/common';
-import { DRIZZLE } from 'src/db/database/database.constants';
-import { livrosTabela } from 'src/db/schemas';
-import type { DrizzleDB } from 'src/db/types/drizzleDB';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { LivrosRepository } from './livros.repository';
+import { CriarLivroDto } from './livros.dto';
+import { AutoresService } from '../autores/autores.service';
 
 @Injectable()
-export class LivrosRepository {
-  constructor(@Inject(DRIZZLE) private readonly db: DrizzleDB) {}
+export class LivrosService {
+  constructor(
+    private readonly livrosRepository: LivrosRepository,
+    private readonly AutoresService: AutoresService,
+  ) {}
 
   async listarLivros() {
-    try {
-      const livros = await this.db.select().from(livrosTabela);
-      return livros;
-    } catch (error) {
-      throw new InternalServerErrorException('erro ao listar livro');
+    return await this.livrosRepository.listarLivros();
+  }
+
+  async criarLivro(bodyRequest: CriarLivroDto) {
+    await this.AutoresService.listarAutor(bodyRequest.id_autor);
+
+    return await this.livrosRepository.criarLivro(bodyRequest);
+  }
+
+  async listarLivro(id: number) {
+    const livrosEncontrado = await this.livrosRepository.listarLivro(id);
+
+    if (!livrosEncontrado) {
+      throw new NotFoundException('livro não encontrado');
     }
+    return livrosEncontrado;
   }
 }

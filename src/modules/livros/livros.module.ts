@@ -1,14 +1,13 @@
-import { DRIZZLE } from 'src/db/database/database.constants';
-import { livrosTabela } from 'src/db/schemas';
-import type { DrizzleDB } from 'src/db/types/drizzleDB';
-import { LivrosController } from './livros.controller';
-import { LivrosRepository } from './livros.service';
-import { LivrosService } from './livros.repository';
 import { Module } from '@nestjs/common';
+import { LivrosController } from './livros.controller';
+import { LivrosService } from './livros.service';
+import { LivrosRepository } from './livros.repository';
+import { AutoresModule } from '../autores/autores.module';
 
 @Module({
   controllers: [LivrosController],
   providers: [LivrosService, LivrosRepository],
+  imports: [AutoresModule],
   exports: [],
 })
 export class LivrosModule {}

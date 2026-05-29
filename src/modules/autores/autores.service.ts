@@ -9,24 +9,6 @@ import { atualizarAutorDto, CriarAutorDto } from './autores.dto';
 import { AutoresRepository } from './autores.repository';
 import { autoresTabela } from 'src/db/schemas';
 
-let autores = [
-  {
-    id: 1,
-    nome: 'João da Silva',
-    email: 'joao.silva@gmail.com',
-  },
-  {
-    id: 2,
-    nome: 'Maria Oliveira',
-    email: 'maria.oliveira@gmail.com',
-  },
-  {
-    id: 3,
-    nome: 'Pedro Santos',
-    email: 'pedro.santos@gmail.com',
-  },
-];
-
 @Injectable()
 export class AutoresService {
   constructor(private readonly autoresRepository: AutoresRepository) {}
