@@ -5,6 +5,7 @@ import {
   MinLength,
   MaxLength,
   IsNumber,
+  IsOptional,
 } from 'class-validator';
 
 export class CriarLivroDto {
@@ -37,4 +38,15 @@ export class CriarLivroDto {
   @IsNumber({}, { message: 'O id_autor deve ser um número' })
   @Type(() => Number)
   id_autor: number;
+}
+
+export class AtualizarLivroDto {
+  @IsString({ message: 'O título deve ser uma string' })
+  @IsOptional()
+  @MinLength(3, { message: 'O título deve ter pelo menos 3 caracteres' })
+  @MaxLength(100, { message: 'O nome deve ter no máximo 100 caracteres' })
+  @Transform(({ value }) => {
+    const valor = typeof value;
+  })
+  titulo: string;
 }

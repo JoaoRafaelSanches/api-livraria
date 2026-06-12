@@ -38,4 +38,22 @@ export class LivrosService {
 
     return await this.livrosRepository.listarLivroComAutor(id);
   }
+
+  async atualizarLivro(id: number, bodyRequest: CriarLivroDto) {
+    await this.listarLivro(id);
+
+    return await this.livrosRepository.atualizarLivro(id, bodyRequest);
+  }
+
+  async deletarLivro(id: number) {
+    await this.listarLivro(id);
+
+    return await this.livrosRepository.deletarLivro(id);
+  }
+
+  // async inativarLivro(id: number) {
+  //  await this.listarLivro(id);
+
+  //  return await this.livrosRepository.inativarLivro(id);
+  //}
 }

@@ -75,4 +75,36 @@ export class LivrosRepository {
       throw new InternalServerErrorException('erro ao listar livro com autor');
     }
   }
+
+  async atualizarLivro(id: number, bodyRequest: CriarLivroDto) {
+    try {
+      await this.db
+        .update(livrosTabela)
+        .set(bodyRequest)
+        .where(eq(livrosTabela.id, id));
+    } catch (error) {
+      throw new InternalServerErrorException('erro ao atualizar livro');
+    }
+  }
+
+  async deletarLivro(id: number) {
+    try {
+      await this.db.delete(livrosTabela).where(eq(livrosTabela.id, id));
+
+      return { message: `Livro de id ${id} deletado com sucesso` };
+    } catch (error) {
+      throw new InternalServerErrorException('erro ao deletar livro');
+    }
+  }
+
+  //async inativarLivro(id: number) {
+  //try {
+  // await this.db
+  //    .update(livrosTabela)
+  //    .set({ ativo: false })
+  //     .where(eq(livrosTabela.id, id));
+  //  } catch (error) {
+  //    throw new InternalServerErrorException('erro ao inativar livro');
+  //  }
+  //}
 }
