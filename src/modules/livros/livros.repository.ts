@@ -96,15 +96,4 @@ export class LivrosRepository {
       throw new InternalServerErrorException('erro ao deletar livro');
     }
   }
-
-  //async inativarLivro(id: number) {
-  //try {
-  // await this.db
-  //    .update(livrosTabela)
-  //    .set({ ativo: false })
-  //     .where(eq(livrosTabela.id, id));
-  //  } catch (error) {
-  //    throw new InternalServerErrorException('erro ao inativar livro');
-  //  }
-  //}
 }

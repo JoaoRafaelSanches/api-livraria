@@ -53,9 +53,4 @@ export class LivrosController {
   async deletarLivro(@Param('id', ParseIntPipe) id: number) {
     return await this.livrosService.deletarLivro(id);
   }
-
-  // @Put('/inativar-livro/:id')
-  // async inativarLivro(@Param('id', ParseIntPipe) id: number) {
-  //   return await this.livrosService.inativarLivro(id);
-  // }
 }
