@@ -33,8 +33,7 @@ export class UsuariosRepository {
         .select()
         .from(UsuariosTabela)
         .where(eq(UsuariosTabela.email, email));
-
-      return usuarioEncontrado[0];
+      return usuarioEncontrado[0] ?? null;
     } catch (error) {
       throw new InternalServerErrorException(
         'erro ao buscar usuario por email',
